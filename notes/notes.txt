@@ -1,0 +1,68 @@
+Icontect Application using Express & mongoDB - developed by: Avinash Rakholiya
+------------------------------------------------------------------------------------------
+DATABASES : IContacts
+Tables : contacts, groups
+Editor : VSCode
+
+-> API Testing
+---------------------------------------------------------------------------------------
+
+-> Test the serer (using ThunderClient / postMan / insomnia)
+
+------------------------------------------------------------------------
+
+GET -> to get data from server -> READ
+POST -> to create data at server -> CREATE
+PUT -> to update data at server -> UPDATE
+DELETE -> to delete data at server -> DELETE
+
+-------------------------------------------------------------------
+
+1./**
+    @usage :  Get all contacts
+    @method : GET
+    @params : no-params
+    @url : http://localhost:9999/contacts
+*/
+
+2/**
+    @usage :  Get a contats
+    @method : GET
+    @params : contactId
+    @url : http://localhost:9999/contacts/:contactId
+*/
+
+3/**
+    @usage : Create a contact
+    @method : POST
+    @params : name,imageUrl,email,mobile,company,title,groupId
+    @url : http://localhost:9999/contacts/
+*/
+
+4/**
+    @usage : Update a contats
+    @method : PUT
+    @params : name,imageUrl,email,mobile,company,title,groupId
+    @url : http://localhost:9999/contacts/:contactId
+*/
+
+5/**
+    @usage : Delete a contact
+    @method : DELETE
+    @params : contactId
+    @url : http://localhost:9999/contacts/:contactId
+*/
+
+6/**
+    @usage : Get all groups
+    @method : GET
+    @params : no-params
+    @url : http://localhost:9999/groups/
+*/
+
+7/**
+    @usage : Get a group 
+    @method : GET
+    @params : groupId
+    @url : http://localhost:9999/groups:/groupId
+*/
