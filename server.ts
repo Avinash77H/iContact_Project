@@ -10,25 +10,39 @@ const app: Application = express();
 const dbUrl: any = process.env.MONGO_DB_CLOUD_URL;
 const dbName: string | undefined = process.env.MONGO_DB_DATABASE;
 
-mongoose
-  .connect(dbUrl, {
+// configure the routers
+// import groupRouter from './router/groupRouter';
+// app.use("/groups",groupRouter);
+
+if(port){
+  app.listen(Number(port),()=>{
+    if(dbUrl && dbName){
+      mongoose.connect(dbUrl, {
     dbName: dbName,
-  })
-  .then(() => {
+  }).then((dbResponse) => {
     console.log("Database connected");
-  })
-  .catch((err) => {
+  }).catch((err) => {
     console.log("Database not connected:", err);
+    process.exit(0); // Force Stop express server
   });
+    }
 
-app.get("/", (request: Request, response: Response) => {
-  response.status(200);
-  response.json({
-    msg: "Welcome to Express Server",
-  });
-});
+    console.log(`Express server is started at ${port}`)
+  })
+}
 
-app.listen(Number(port), hostName, () => {
-  console.log(`Express Server is started at http://${hostName}:${port}`);
-});
+
+
+// app.get("/", (request: Request, response: Response) => {
+//   response.status(200);
+//   response.json({
+//     msg: "Welcome to Express Server",
+//   });
+// });
+
+
+
+// app.listen(Number(port), hostName, () => {
+//   console.log(`Express Server is started at http://${hostName}:${port}`);
+// });
 
