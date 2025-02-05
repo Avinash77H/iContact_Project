@@ -9,4 +9,4 @@ const GroupSchema = new mongoose.Schema<IGroup>(
 );
 
 const GroupsTable = mongoose.model<IGroup>("groups",GroupSchema);
-export default GroupSchema;
+export default GroupsTable;
