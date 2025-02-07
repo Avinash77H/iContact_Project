@@ -4,6 +4,13 @@ import GroupsTable from "../database/GroupSchema"
 import { IGroup } from '../model/IGroup'
 import mongoose from 'mongoose'
 
+/**
+    @usage : Get all groups
+    @method : GET
+    @params : no-params
+    @url : http://localhost:9988/groups/
+*/
+
 
 export const getAllGroups = async(request:Request,response:Response)=>{
   try{

@@ -3,7 +3,7 @@ import {IGroup} from "../model/IGroup";
 
 const GroupSchema = new mongoose.Schema<IGroup>(
   {
-    name: { type:String,required:true,unique:true},
+    name: { type:String,required:true,unique:true}
   },
   {timestamps:true}
 );
