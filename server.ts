@@ -10,9 +10,17 @@ const dbUrl: any = process.env.MONGO_DB_CLOUD_URL;
 const dbName: string | undefined = process.env.MONGO_DB_DATABASE;
 app.use(express.json());
 
-// configure the routers
+// configure the groupRouters
 import groupRouter from "./router/groupRouter";
 app.use("/groups", groupRouter);
+
+// configure the userRouters
+import userRouter from "./router/userRouter";
+app.use("/users",userRouter);
+
+// cofigure the contactRouters
+import contactRouter from "./router/contactRouter";
+app.use("/contact",contactRouter);
 
 if (port) {
   app.listen(Number(port), () => {
