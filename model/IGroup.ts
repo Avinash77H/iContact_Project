@@ -1,5 +1,5 @@
 export interface IGroup {
-  _id: string;
+  _id: String;
   name: String;
   createdAt?: Date;
   updatedAt?: Date;
