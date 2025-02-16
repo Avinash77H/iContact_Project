@@ -31,7 +31,7 @@ export const getAllGroups = async (request: Request, response: Response) => {
 */
 
 export const createGroup = async (request: Request, response: Response) => {
-  console.log(request)
+  
   let { name } = request.body;
   let theGroup: IGroup | null | undefined = await new GroupsTable({
     name: name,

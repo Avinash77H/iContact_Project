@@ -25,7 +25,6 @@ groupRouter.post(
   "/",
   [body("name").not().isEmpty().withMessage("Name is Required")], // express validator
   async (request: Request, response: Response) => {
-    console.log("post",body('name'));
     await groupController.createGroup(request, response);
   }
 );
