@@ -1,5 +1,6 @@
 import { Request,Response,Router } from 'express';
-import * as groupController from '../controllers/userController'
+import * as userController from '../controllers/userController'
+import { body } from 'express-validator';
 
 const userRouter:Router = Router();
 
@@ -7,10 +8,15 @@ const userRouter:Router = Router();
     @usage : create user
     @method : post
     @params : no-params
-    @url : http://localhost:9999/users/
+    @url : http://localhost:9999/users/register
 */
-userRouter.post('/' , async (request:Request  , response:Response) => {
-  await groupController.createUser(request , response);
+userRouter.post('/register',[
+  body('username').not().isEmpty().withMessage('username is Required'),
+  body('email').isEmail().withMessage('Please enter a valid email'),
+  body('password').isStrongPassword().withMessage('Strong password is Required')
+] , async (request:Request  , response:Response) => {
+
+  await userController.createUser(request , response);
 })
 
 /**
@@ -20,7 +26,7 @@ userRouter.post('/' , async (request:Request  , response:Response) => {
     @url : http://localhost:9999/users
 */
 userRouter.get('/',async(request:Request,response:Response)=>{
-  await groupController.getUser(request,response);
+  await userController.getUser(request,response);
 })
 
 /**
@@ -30,7 +36,7 @@ userRouter.get('/',async(request:Request,response:Response)=>{
     @url : http://localhost:9999/users
 */
 userRouter.get('/id',async(request:Request,response:Response)=>{
-  await groupController.getUserById(request,response);
+  await userController.getUserById(request,response);
 })
 
 /**
@@ -40,7 +46,7 @@ userRouter.get('/id',async(request:Request,response:Response)=>{
     @url : http://localhost:9999/users
 */
 userRouter.delete('/',async(request:Request,response:Response)=>{
-  await groupController.deleteUser(request,response);
+  await userController.deleteUser(request,response);
 })
 
 /**
@@ -50,7 +56,7 @@ userRouter.delete('/',async(request:Request,response:Response)=>{
     @url : http://localhost:9999/users
 */
 userRouter.patch('/',async(request:Request,response:Response)=>{
-  await groupController.updateUser(request,response);
+  await userController.updateUser(request,response);
 })
 
 export default userRouter;

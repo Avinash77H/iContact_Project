@@ -1,20 +1,75 @@
 import UserTable from '../database/UserSchema'
 import { Request , Response } from 'express'
+import { validationResult } from 'express-validator';
+import { IUser } from '../model/IUser';
+import jwt from 'jsonwebtoken';
+import bcryptjs from 'bcryptjs';
+import gravatar from 'gravatar';
 
 // create user
-export const createUser = async (request:Request , response:Response) => {
-    const userBody = request.body;
-    try{
-        const user = new UserTable(userBody);
-        const userData = await user.save();
-        if(userData){
-            return response.json({data : userData});
-        }else{
-            return response.status(400).send("Not Found");
-        }
-    }catch(err){
-        response.status(400).send("Somthing Went Wrong");
+// export const createUser = async (request:Request , response:Response) => {
+//     const userBody = request.body;
+//     try{
+//         const user = new UserTable(userBody);
+//         const userData = await user.save();
+//         if(userData){
+//             return response.json({data : userData});
+//         }else{
+//             return response.status(400).send("Not Found");
+//         }
+//     }catch(err){
+//         response.status(500).send("Somthing Went Wrong");
+//     }
+// }
+export const createUser = async (request:Request, response:Response) => {
+    const errors = validationResult(request);
+    if(!errors.isEmpty()){
+        return response.status(400).json({errors:errors.array()});
     }
+    try{
+        // read the form data
+        let {username, email, password} = request.body;
+        //ceck if the user already exists
+        const userObj = await UserTable.findOne({email:email});
+        if(userObj){
+            return response.status(400).json({
+                error:"the user is already exists"
+            })
+        }
+         // password encryption
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(password, salt);
+
+    // gravtar url
+    const imageUrl = gravatar.url(email,{
+        size:"200",
+        rating:"pg",
+        default:"mm"
+    })
+
+    // insert to db
+    const newUser:IUser = {
+        username:username,
+        email:email,
+        password: hashedPassword,
+        imageUrl:imageUrl,
+        isAdmin:false
+    }
+
+    const theUserObj = await new UserTable(newUser).save();
+    if(theUserObj){
+        return response.status(200).json({
+            data: theUserObj,
+            msg:  "Registration is Successful"
+        });
+    }
+    }catch(error:any){
+        return response.status(500).json({
+            error:error.message
+        })
+    }
+
+   
 }
 
 // read method

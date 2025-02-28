@@ -5,6 +5,7 @@ import { IGroup } from "../model/IGroup";
 import mongoose from "mongoose";
 
 
+
 /**
     @usage : Get all groups
     @method : GET
@@ -18,7 +19,7 @@ export const getAllGroups = async (request: Request, response: Response) => {
     if (groups) {
       return response.status(200).json(groups);
     }
-  } catch (error: any) {
+  }catch(error) {
     return response.status(500).json({ msg: "Data not found" });
   }
 };
@@ -26,7 +27,7 @@ export const getAllGroups = async (request: Request, response: Response) => {
 /**
     @usage : create group
     @method : post
-    @params : name
+    @params : no-params
     @url : http://localhost:9988/groups
 */
 
@@ -48,7 +49,7 @@ export const createGroup = async (request: Request, response: Response) => {
 /**
     @usage : to get a group
     @method : GET
-    @params : no-params
+    @params : groupId
     @url : http://localhost:9988/groups/:groupId
 */
 
