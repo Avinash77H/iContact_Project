@@ -7,20 +7,7 @@ import bcryptjs from 'bcryptjs';
 import gravatar from 'gravatar';
 
 // create user
-// export const createUser = async (request:Request , response:Response) => {
-//     const userBody = request.body;
-//     try{
-//         const user = new UserTable(userBody);
-//         const userData = await user.save();
-//         if(userData){
-//             return response.json({data : userData});
-//         }else{
-//             return response.status(400).send("Not Found");
-//         }
-//     }catch(err){
-//         response.status(500).send("Somthing Went Wrong");
-//     }
-// }
+
 export const createUser = async (request:Request, response:Response) => {
     const errors = validationResult(request);
     if(!errors.isEmpty()){
