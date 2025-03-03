@@ -7,7 +7,6 @@ import bcryptjs from 'bcryptjs';
 import gravatar from 'gravatar';
 
 // create user
-
 export const createUser = async (request:Request, response:Response) => {
     const errors = validationResult(request);
     if(!errors.isEmpty()){
@@ -60,7 +59,6 @@ export const createUser = async (request:Request, response:Response) => {
 }
 
 // login user
-
 export const loginUser = async (request:Request, response:Response) => {
     const errors = validationResult(request);
     if(!errors.isEmpty()){
