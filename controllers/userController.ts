@@ -59,6 +59,59 @@ export const createUser = async (request:Request, response:Response) => {
    
 }
 
+// login user
+
+export const loginUser = async (request:Request, response:Response) => {
+    const errors = validationResult(request);
+    if(!errors.isEmpty()){
+        return response.status(400).json({errors:errors.array()});
+    }
+    try{
+        // read the form data
+        let { email, password} = request.body;
+        //ceck if the user already exists
+        const userObj = await UserTable.findOne({email:email});
+        if(!userObj){
+            return response.status(400).json({
+                error:"the user is already exists"
+            })
+        }
+
+        // check for password
+        let isMatch:boolean = await bcryptjs.compare(password, userObj.password);
+        if(!isMatch){
+            return response.status(500).json({
+                error:"Invalid Password"
+            })
+        }
+
+        // create a token
+        const secretKey : string | undefined = process.env.JWT_SECRET_KEY;
+        const payload:any = {
+            user:{
+                id:userObj._id,
+                email:userObj.email
+            }
+        };
+        if(secretKey && payload){ 
+            jwt.sign(payload,secretKey,{expiresIn:100000000},(error,encoded)=>{
+                if(error) throw error;
+                if(encoded){
+                    return response.status(200).json({
+                        data: userObj,
+                        token:encoded,
+                        msg:"Login is successful"
+                    })
+                }
+             
+            }
+        )}
+}catch(error:any){
+        return response.status(500).json({
+            error:error.message
+        })
+    }}
+
 // read method
 export const getUser = async(request:Request,response:Response)=>{
     try{

@@ -20,6 +20,22 @@ userRouter.post('/register',[
 })
 
 /**
+    @usage : login user
+    @method : post
+    @params : no-params
+    @url : http://localhost:9999/users/login
+*/
+
+userRouter.post('/login',[
+  body('email').isEmail().withMessage('Please enter a valid email'),
+  body('password').isStrongPassword().withMessage('Strong password is Required')
+] , async (request:Request  , response:Response) => {
+
+  await userController.loginUser(request , response);
+})
+
+/**
+
     @usage : get All user
     @method : get
     @params : no-params
