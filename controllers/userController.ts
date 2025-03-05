@@ -6,8 +6,13 @@ import jwt from 'jsonwebtoken';
 import bcryptjs from 'bcryptjs';
 import gravatar from 'gravatar';
 
-// create user
-export const createUser = async (request:Request, response:Response) => {
+/**
+    @usage : register user
+    @method : post
+    @params : no-params
+    @url : http://localhost:9999/users/register
+*/
+export const registerUser = async (request:Request, response:Response) => {
     const errors = validationResult(request);
     if(!errors.isEmpty()){
         return response.status(400).json({errors:errors.array()});
@@ -15,7 +20,7 @@ export const createUser = async (request:Request, response:Response) => {
     try{
         // read the form data
         let {username, email, password} = request.body;
-        //ceck if the user already exists
+        //check if the user already exists
         const userObj = await UserTable.findOne({email:email});
         if(userObj){
             return response.status(400).json({
@@ -31,7 +36,7 @@ export const createUser = async (request:Request, response:Response) => {
         size:"200",
         rating:"pg",
         default:"mm"
-    })
+    })  
 
     // insert to db
     const newUser:IUser = {
@@ -58,6 +63,7 @@ export const createUser = async (request:Request, response:Response) => {
    
 }
 
+
 // login user
 export const loginUser = async (request:Request, response:Response) => {
     const errors = validationResult(request);
@@ -71,10 +77,10 @@ export const loginUser = async (request:Request, response:Response) => {
         const userObj = await UserTable.findOne({email:email});
         if(!userObj){
             return response.status(400).json({
-                error:"the user is already exists"
+                error:"Invalid email"
             })
         }
-
+        console.log("userObject",userObj);
         // check for password
         let isMatch:boolean = await bcryptjs.compare(password, userObj.password);
         if(!isMatch){
@@ -82,7 +88,6 @@ export const loginUser = async (request:Request, response:Response) => {
                 error:"Invalid Password"
             })
         }
-
         // create a token
         const secretKey : string | undefined = process.env.JWT_SECRET_KEY;
         const payload:any = {
